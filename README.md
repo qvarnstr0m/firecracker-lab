@@ -53,7 +53,7 @@ make clean
 | [`vm/`](vm) | Start, stop and list microVMs through the API socket |
 | [`labs/`](labs) | Step-by-step labs, in order |
 | [`orchestrator/`](orchestrator) | Go code for lab 08 |
-| [`docs/`](docs) | Architecture, fly.io comparison, troubleshooting |
+| [`docs/`](docs) | Architecture, fly.io comparison, troubleshooting, [remote access](docs/remote-access.md) |
 
 Kernels, rootfs images and runtime state go in `build/` and `run/`, which are
 gitignored.

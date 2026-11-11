@@ -20,6 +20,9 @@ fi
 if command -v iptables >/dev/null && as_root iptables -nL DOCKER-USER >/dev/null 2>&1; then
   while as_root iptables -D DOCKER-USER -i "$FC_BRIDGE" -j ACCEPT 2>/dev/null; do :; done
   while as_root iptables -D DOCKER-USER -o "$FC_BRIDGE" -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT 2>/dev/null; do :; done
+  for iface in ${FC_TRUSTED_IFACES:-}; do
+    while as_root iptables -D DOCKER-USER -i "$iface" -o "$FC_BRIDGE" -j ACCEPT 2>/dev/null; do :; done
+  done
 fi
 
 log "network removed"

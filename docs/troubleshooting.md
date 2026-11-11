@@ -53,6 +53,13 @@ same effect as Docker: `sudo ufw route allow in on fcbr0`.
 `cat /etc/resolv.conf` in the guest; it's written from the `ip=` argument's DNS
 field (`FC_GUEST_DNS`).
 
+**Laptop can't reach a VM over Tailscale**
+Check that the `172.30.0.0/24` route is approved in the Tailscale admin console,
+that a Linux laptop runs with `--accept-routes`, and, on a host with Docker,
+that `FC_TRUSTED_IFACES=tailscale0` is set and `make net` was run again:
+`sudo iptables -nL DOCKER-USER` should show an `ACCEPT` from `tailscale0` to
+`fcbr0`. See [remote access](remote-access.md).
+
 **Conflicts with libvirt**
 libvirt uses `virbr0` and `192.168.122.0/24`; this lab uses `fcbr0` and
 `172.30.0.0/24`, and its own nftables table. If you changed either subnet,

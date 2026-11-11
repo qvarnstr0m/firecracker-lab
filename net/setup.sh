@@ -52,6 +52,11 @@ if command -v iptables >/dev/null && as_root iptables -nL DOCKER-USER >/dev/null
     || show as_root iptables -I DOCKER-USER -i "$FC_BRIDGE" -j ACCEPT
   as_root iptables -C DOCKER-USER -o "$FC_BRIDGE" -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT 2>/dev/null \
     || show as_root iptables -I DOCKER-USER -o "$FC_BRIDGE" -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+  for iface in ${FC_TRUSTED_IFACES:-}; do
+    log "allowing new connections from $iface to microVMs"
+    as_root iptables -C DOCKER-USER -i "$iface" -o "$FC_BRIDGE" -j ACCEPT 2>/dev/null \
+      || show as_root iptables -I DOCKER-USER -i "$iface" -o "$FC_BRIDGE" -j ACCEPT
+  done
 fi
 
 log "network ready"

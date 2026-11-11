@@ -103,7 +103,8 @@ ip -br link show master fcbr0
 
 Two taps on the bridge now. From another machine on your LAN the VMs aren't
 reachable directly; they're behind NAT. Lab 08 deals with that. For now, an
-SSH tunnel works: `ssh -L 8080:172.30.0.3:80 <host>`.
+SSH tunnel works: `ssh -L 8080:172.30.0.3:80 <host>`, or a Tailscale subnet
+route (see [remote access](../docs/remote-access.md)).
 
 ## 5. Outbound
 
