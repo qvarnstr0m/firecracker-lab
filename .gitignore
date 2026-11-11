@@ -1,0 +1,24 @@
+# Build output: kernels, rootfs images, kernel sources
+/build/
+vmlinux*
+*.ext4
+*.squashfs
+*.img
+
+# Runtime state: API sockets, logs, per-VM disks, snapshots
+/run/
+*.sock
+*.socket
+*.log
+*.snap
+*.mem
+
+# Go
+/orchestrator/bin/
+/orchestrator/fcorch
+
+# Editors / OS
+.DS_Store
+.idea/
+.vscode/
+*.swp

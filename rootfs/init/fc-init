@@ -1,0 +1,31 @@
+#!/bin/sh
+# PID 1 inside the microVM.
+#
+# The kernel has already configured eth0 and the hostname from the ip= boot
+# argument. This script mounts the pseudo filesystems a container image expects,
+# then hands over to the image's entrypoint (written by rootfs/from-oci.sh).
+# When the entrypoint exits, PID 1 exits, the kernel panics and, with
+# "panic=1 reboot=k", Firecracker shuts down. One VM, one process.
+
+mount -t proc proc /proc
+mount -t sysfs sysfs /sys
+mount -t devtmpfs devtmpfs /dev 2>/dev/null
+mkdir -p /dev/pts /dev/shm
+mount -t devpts devpts /dev/pts
+mount -t tmpfs tmpfs /dev/shm
+mount -t tmpfs tmpfs /run 2>/dev/null
+mount -t tmpfs tmpfs /tmp 2>/dev/null
+
+ip link set lo up 2>/dev/null || ifconfig lo up 2>/dev/null
+
+# The kernel writes the DNS server from ip= to /proc/net/pnp.
+if [ -r /proc/net/pnp ]; then
+  grep '^nameserver' /proc/net/pnp > /etc/resolv.conf 2>/dev/null
+fi
+
+echo "fc-init: starting $(cat /etc/fc-entrypoint.cmd 2>/dev/null)"
+# shellcheck disable=SC1091  # generated per image by rootfs/from-oci.sh
+. /etc/fc-entrypoint.sh
+
+echo "fc-init: entrypoint returned" >&2
+exit 1
