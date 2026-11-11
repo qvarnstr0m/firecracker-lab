@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 # Shared helpers. Every script sources this file.
 # shellcheck shell=bash
+# Variables defined here are used by the scripts that source this file.
+# shellcheck disable=SC2034
 
 set -euo pipefail
 

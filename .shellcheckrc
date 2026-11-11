@@ -1,0 +1,3 @@
+# Resolve `source` paths relative to the script, not the directory shellcheck runs from.
+source-path=SCRIPTDIR
+external-sources=true
