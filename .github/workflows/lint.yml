@@ -23,9 +23,10 @@ jobs:
         working-directory: orchestrator
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-go@v5
+      - uses: actions/setup-go@v7
         with:
           go-version-file: orchestrator/go.mod
+          cache: false   # no dependencies yet, so no go.sum to key a cache on
       - run: go vet ./...
       - run: go build ./...
 
@@ -33,6 +34,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: DavidAnson/markdownlint-cli2-action@v19
+      - uses: DavidAnson/markdownlint-cli2-action@v25
         with:
           globs: "**/*.md"
